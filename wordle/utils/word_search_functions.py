@@ -1,22 +1,45 @@
 '''
-Script to evaluate performance of wordle solver if it is let to automatically solve the puzzle.
+Main functions that use auxiliary functions to find words and return to user/main script.
+
+Author:
+gp-add11
 
 Version:
+0.1.1 (alpha) 
 February 2022
-0.1.0 (alpha)
 '''
-#Imports
+
 import numpy as np
-from utils.aux_functions import *
+from .aux_functions import *
 
-MAX_ALLOWED_GUESS_COUNT = 5
+def more_characters_guesser(letters_for_next_word: set, possible_target_words: np.array, words_list: list) -> str:
+    # This function is returing only one word even if there are multiple possible good candidates for the next guess. 
+    # Also, that one word is decided based on alpabetical order
+    letter_score = {}
+    for letter in letters_for_next_word:
+        score = 0
+        for word in possible_target_words:
+            if letter in word:
+                score += 1
+        letter_score[letter] = score
+    
+    words_scores = []
+    for word in words_list:
+        score = 0
+        for letter in set(word):
+            if letter in letters_for_next_word:
+                score += letter_score[letter]
+        words_scores.append(score)
+    
+    return words_list[np.array(words_scores).argmax()]
 
-def target_word_finder(target_word: str, words_list: list) -> tuple:
+
+def target_word_finder(target_word: str, words_list: list, max_guesses:int = 6) -> tuple:
     guess_count = 0 #Need to verify the update of this variable as conclusions depend on it.
     guessed_words = [] # can be checked with direct string
     last_guess = ''
     matched_letters = set()
-    WORD_LENGTH = 5
+    WORD_LENGTH = 5 #Should be a hyperparameter/constant defined elsewhere
     positioned_letters = '_'*WORD_LENGTH
     predicted_target_word = 'UNKNOWN' # kept when guesser gets stuck.
     while last_guess != target_word:
@@ -48,41 +71,8 @@ def target_word_finder(target_word: str, words_list: list) -> tuple:
             predicted_target_word = last_guess
             possible_target_words = predicted_target_word
             break
-        if guess_count > MAX_ALLOWED_GUESS_COUNT:
+        if guess_count > max_guesses:
             break
     
     return guess_count, predicted_target_word, possible_target_words # Possible target words kept temporarily to analyse when prediction is incorrect.
 
-def are_anagrams(possible_target_words: np.array) -> bool:
-    first_distinct_characters = set(possible_target_words[0])
-    _anagram = True
-    for word in possible_target_words[1:]:
-        if first_distinct_characters != set(word):
-            _anagram = False
-            break
-    return _anagram
-
-
-	
-performance_results = []
-accuracy = 0
-inaccuracy = 0
-curr_alphabet = 'a' #Kept to track status of execution
-print(curr_alphabet)
-results_cache = []
-for word in words: #Replace words variable with approproate
-    if curr_alphabet != word[0]:
-        curr_alphabet = word[0]
-        print(curr_alphabet)
-    target_word = word
-    attempts, prediction, possible_predictions = target_word_finder(word, words) #Replace words variable with approproate
-    results_cache.append((word, attempts, prediction, possible_predictions))
-    if prediction == word:
-        accuracy += 1
-    else:
-        inaccuracy += 1
-    performance_results.append(attempts)
-
-import collections
-collections.Counter(performance_results)
-###Counter({4: 2054, 3: 796, 2: 21, 5: 1081, 1: 1, 6: 267, 7: 40, 8: 6})

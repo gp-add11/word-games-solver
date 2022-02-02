@@ -150,25 +150,16 @@ def wrong_position_eliminator(guessed_words: list, positioned_letters: str, matc
             curr_bool_array = and_operation(curr_bool_array,
                                             [word[position] != letter for word in words_list])
         return curr_bool_array
-    
-def more_characters_guesser(letters_for_next_word: set, possible_target_words: np.array, words_list: list) -> str:
-    # This function is returing only one word even if there are multiple possible good candidates for the next guess. 
-    # Also, that one word is decided based on alpabetical order
-    letter_score = {}
-    for letter in letters_for_next_word:
-        score = 0
-        for word in possible_target_words:
-            if letter in word:
-                score += 1
-        letter_score[letter] = score
-    
-    words_scores = []
-    for word in words_list:
-        score = 0
-        for letter in set(word):
-            if letter in letters_for_next_word:
-                score += letter_score[letter]
-        words_scores.append(score)
-    
-    return words_list[np.array(words_scores).argmax()]
+
+
+def are_anagrams(possible_target_words: np.array) -> bool:
+    first_distinct_characters = set(possible_target_words[0])
+    _anagram = True
+    for word in possible_target_words[1:]:
+        if first_distinct_characters != set(word):
+            _anagram = False
+            break
+    return _anagram
+
+
 
