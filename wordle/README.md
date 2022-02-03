@@ -22,7 +22,7 @@ In a typical game, only six guesses of valid 5-letter words can be made.
 - For each possible 5-letter word, determines number of tries it will take to guess that as target word.  
 - Results:  
 | Number of tries taken | Number of target 5-letter words |  
-| --------------------- | ------------------------------: |
+| --------------------- | ------------------------------: |  
 | 1                     | 1                               |  
 | 2                     | 21                              |  
 | 3                     | 796                             |  
