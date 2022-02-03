@@ -9,13 +9,13 @@ In a typical game, only six guesses of valid 5-letter words can be made.
 	-- Performance evaluation of fully automated solution of guessing and evaluation of feedback.  
 
 #### Assistance script
-- Takes user inputs:
-	-- Guesses made so far  
-	-- Letters which have a hit (matching) with or without known positions in target word.
+- Takes user inputs:  
+	-- Guesses made so far.  
+	-- Letters which have a hit (matching) with or without known positions in target word.  
 	-- Letters whose position(s) have been determined in the target word.  
-- Returns:
-	-- Number of possible target words.
-	-- Suggested next guess word to narrow down soluion space.
+- Returns:  
+	-- Number of possible target words.  
+	-- Suggested next guess word to narrow down soluion space.  
 
 ### Performance evaluation script
 - Takes no user input.  
@@ -35,7 +35,7 @@ In a typical game, only six guesses of valid 5-letter words can be made.
   
 - Most words can be guessed within 6 attempts. 
 - For 46 words, algorithm loses the game.  
-- Heuristics:
+- Heuristics:  
 	-- Forming 5-letter word based on letters with highest frequency among all words. 
 This is to increase probability of finding matching characters in target word, and to steeply reduce solution space.  
 	-- Iterate through words containing same letters. Since frequency-based heuristcs will not work.  
